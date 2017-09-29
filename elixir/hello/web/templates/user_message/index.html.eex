@@ -1,0 +1,30 @@
+<h2>Listing user messages</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th>User</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user_message <- @user_messages do %>
+    <tr>
+      <td><%= user_message.title %></td>
+      <td><%= user_message.body %></td>
+      <td><%= user_message.user_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: user_message_path(@conn, :show, user_message), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: user_message_path(@conn, :edit, user_message), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: user_message_path(@conn, :delete, user_message), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New user message", to: user_message_path(@conn, :new) %>

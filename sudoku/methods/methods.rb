@@ -14,6 +14,12 @@ def grid_columns_method
   return grid_columns.to_i
 end
 
+def grid_sudoku_method
+  puts "Sudoku file name:"
+  grid_sudoku = gets.chomp
+  return grid_sudoku
+end
+
 # GET SUDOKU VALUES
 
 def sudoku_csv_parsing(filepath, col_sep, quote_char)
@@ -226,11 +232,17 @@ def one_solution?(sudoku, grid_lines, grid_columns)
   grid_size = grid_lines * grid_columns
   sudoku_size = grid_size * grid_size
 
-  if solution(grid_lines, grid_columns, sudoku).flatten.length == sudoku_size
-    return true
+  sudoku_test = sudoku
+
+  result = false
+
+  if solution(grid_lines, grid_columns, sudoku_test).flatten.length == sudoku_size
+    result = true
   else
-    return false
+    result = false
   end
+
+  return result
 end
 
 ################################################################################
@@ -350,67 +362,72 @@ def get_sudoku_with_uniques_with_grided(sudoku_with_uniques, grid_lines, grid_co
 end
 
 def solution(grid_lines, grid_columns, sudoku)
-  # 2. SUDOKU WITH OPTIONS (SUDOKU, TRANSPOSE & GRIDS)
+  sudoku_with_options = sudoku_with_options(grid_lines, grid_columns, sudoku)
+  sudoku_with_uniques = get_sudoku_with_uniques_without_grided(sudoku_with_options, grid_lines, grid_columns)
+  sudoku_with_uniques_with_grided = get_sudoku_with_uniques_with_grided(sudoku_with_uniques, grid_lines, grid_columns)
+  solution = sudoku_with_uniques_with_grided
+  # return solution
 
-  # check(sudoku, sudoku, grid_lines, grid_columns)
-  puts "
+  # # 2. SUDOKU WITH OPTIONS (SUDOKU, TRANSPOSE & GRIDS)
 
-  sudoku_with_options:
+  # puts "
 
-  "
+  # sudoku_with_options:
 
-  p sudoku_with_options = sudoku_with_options(grid_lines, grid_columns, sudoku)
-  print "get_sudoku_check?            "
-  p get_sudoku_check?(sudoku_with_options, grid_lines, grid_columns)
-  print "solution_correspond_initial? "
-  p solution_correspond_initial?(sudoku, sudoku_with_options)
-  # check(sudoku, sudoku_with_options, grid_lines, grid_columns)
+  # "
+
+  # p sudoku_with_options = sudoku_with_options(grid_lines, grid_columns, sudoku)
+  # print "get_sudoku_check?            "
+  # p get_sudoku_check?(sudoku_with_options, grid_lines, grid_columns)
+  # print "solution_correspond_initial? "
+  # p solution_correspond_initial?(sudoku, sudoku_with_options)
 
 
-  # 3. GET SUDOKU WITH UNIQUES: ITERATE OVER 3 TRANSFORMATIONS UNTIL ALL UNIQUES IDENTOFIED
 
-  puts "
+  # # 3. GET SUDOKU WITH UNIQUES: ITERATE OVER 3 TRANSFORMATIONS UNTIL ALL UNIQUES IDENTOFIED
 
-  sudoku_with_uniques:
+  # puts "
 
-  "
+  # sudoku_with_uniques:
 
-  p sudoku_with_uniques = get_sudoku_with_uniques_without_grided(sudoku_with_options, grid_lines, grid_columns)
-  print "get_sudoku_check?            "
-  p get_sudoku_check?(sudoku_with_uniques, grid_lines, grid_columns)
-  print "solution_correspond_initial? "
-  p solution_correspond_initial?(sudoku, sudoku_with_uniques)
-  # check(sudoku, sudoku_with_uniques, grid_lines, grid_columns)
+  # "
 
-  puts "
+  # p sudoku_with_uniques = get_sudoku_with_uniques_without_grided(sudoku_with_options, grid_lines, grid_columns)
+  # print "get_sudoku_check?            "
+  # p get_sudoku_check?(sudoku_with_uniques, grid_lines, grid_columns)
+  # print "solution_correspond_initial? "
+  # p solution_correspond_initial?(sudoku, sudoku_with_uniques)
 
-  sudoku_with_uniques_grided:
 
-  "
+  # puts "
 
-  p sudoku_with_uniques_with_grided = get_sudoku_with_uniques_with_grided(sudoku_with_uniques, grid_lines, grid_columns)
-  print "get_sudoku_check?            "
-  p get_sudoku_check?(sudoku_with_uniques_with_grided, grid_lines, grid_columns)
-  print "solution_correspond_initial? "
-  p solution_correspond_initial?(sudoku, sudoku_with_uniques_with_grided)
-  # check(sudoku, sudoku_with_uniques_with_grided, grid_lines, grid_columns)
+  # sudoku_with_uniques_grided:
 
+  # "
+
+  # p sudoku_with_uniques_with_grided = get_sudoku_with_uniques_with_grided(sudoku_with_uniques, grid_lines, grid_columns)
+  # print "get_sudoku_check?            "
+  # p get_sudoku_check?(sudoku_with_uniques_with_grided, grid_lines, grid_columns)
+  # print "solution_correspond_initial? "
+  # p solution_correspond_initial?(sudoku, sudoku_with_uniques_with_grided)
+
+
+
+  # # SOLUTION:
+
+  # puts "
 
   # SOLUTION:
 
-  puts "
+  # "
 
-  SOLUTION:
+  # p solution = sudoku_with_uniques_with_grided
+  # print "get_sudoku_check?            "
+  # p get_sudoku_check?(solution, grid_lines, grid_columns)
+  # print "solution_correspond_initial? "
+  # p solution_correspond_initial?(sudoku, solution)
 
-  "
-
-  p solution = sudoku_with_uniques_with_grided
-  print "get_sudoku_check?            "
-  p get_sudoku_check?(solution, grid_lines, grid_columns)
-  print "solution_correspond_initial? "
-  p solution_correspond_initial?(sudoku, solution)
-
-  return solution
+  # return solution
 end
 
 # 3. SUDOKU SOLUTIONS

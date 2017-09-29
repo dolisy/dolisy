@@ -1,0 +1,23 @@
+<h2>Show user message</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @user_message.title %>
+  </li>
+
+  <li>
+    <strong>Body:</strong>
+    <%= @user_message.body %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @user_message.user_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: user_message_path(@conn, :edit, @user_message) %>
+<%= link "Back", to: user_message_path(@conn, :index) %>

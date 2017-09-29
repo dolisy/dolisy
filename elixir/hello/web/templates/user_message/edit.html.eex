@@ -1,0 +1,6 @@
+<h2>Edit user message</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: user_message_path(@conn, :update, @user_message) %>
+
+<%= link "Back", to: user_message_path(@conn, :index) %>

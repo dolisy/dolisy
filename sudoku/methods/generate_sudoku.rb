@@ -74,32 +74,26 @@ def get_sudoku_remove_error(sudoku, grid_lines, grid_columns)
       end
     end
   end
-  sudoku.each do |error|
-    case error[2]
-    when "line"
-      sudoku[error[3]].map! do |cell|
-        if cell[0] == error[1]
-          []
-        else
-          cell
-        end
-      end
-    when "column"
-      sudoku[error[3]].map! do |cell|
-        if cell[0] == error[1]
-          []
-        else
-          cell
-        end
-      end
-    when "grid"
-      sudoku[error[3]].map! do |cell|
-        if cell[0] == error[1]
-          []
-        else
-          cell
-        end
-      end
+
+  # sudoku_transposed = sudoku_transposed(sudoku)
+
+  # sudoku_grided = sudoku_grided(grid_lines, grid_columns, sudoku)
+
+  results.each do |result|
+    case result[2]
+    when 'line'
+      line = sudoku[result[3]].map { |cell| cell[0] == result[1] ? [] : cell }
+      sudoku[result[3]] = line
+    when 'column'
+      column = sudoku_transposed(sudoku)[result[3]].map { |cell| cell[0] == result[1] ? [] : cell }
+      sudoku_transposed = sudoku_transposed(sudoku)
+      sudoku_transposed[result[3]] = column
+      sudoku = sudoku_transposed(sudoku_transposed)
+    when 'grid'
+      grid = sudoku_grided(grid_lines, grid_columns, sudoku)[result[3]].map { |cell| cell[0] == result[1] ? [] : cell }
+      sudoku_grided = sudoku_grided(grid_lines, grid_columns, sudoku)
+      sudoku_grided[result[3]] = grid
+      sudoku = sudoku_grided(grid_lines, grid_columns, sudoku_grided)
     end
   end
   return sudoku
@@ -116,73 +110,61 @@ grid_size = grid_lines * grid_columns
 p sudoku_structure = generate_sudoku_structure(grid_lines, grid_columns)
 
 
-puts "
-
-INITIALIZE
-
-"
-p sudoku = get_generate_sudoku_n(grid_size, sudoku_structure, grid_lines, grid_columns)
-p sudoku.flatten.length
-p get_sudoku_check?(sudoku, grid_lines, grid_columns)
-
-solution = solution(grid_lines, grid_columns, sudoku)
-solution.each { |line| p line }
 
 
-puts "
+(1..grid_size).to_a.shuffle.each_with_index do |option, option_index|
+  sudoku_structure[0][option_index] = [option]
+end
 
-ROUMD 1
+p sudoku_structure
 
-"
+(1..grid_size - 1).to_a.each do |i|
+  until sudoku_structure[i].flatten.length == grid_size
+    sudoku_structure[i].each_with_index do |cell, cell_index|
+      (1..grid_size).to_a.shuffle.each do |option|
+        unless sudoku_structure[i].flatten.include? option
+          unless sudoku_transposed(sudoku_structure)[cell_index].flatten.include? option
+            unless sudoku_grided(grid_lines, grid_columns, sudoku_structure)[i / grid_lines * grid_lines + cell_index / grid_columns].flatten.include? option
+              cell[0] = option
+            end
+          end
+        end
+      end
+    end
+  end
+end
 
-p solution.flatten.length
-p get_sudoku_check?(solution, grid_lines, grid_columns)
-p get_sudoku_check_error(solution, grid_lines, grid_columns)
+sudoku_structure.each do |line|
+  p line
+end
 
-puts "
-
-remove errors 1:
-
-"
-p solution_one = get_sudoku_remove_error(solution, grid_lines, grid_columns)
-
-p solution_one.flatten.length
-p get_sudoku_check?(solution_one, grid_lines, grid_columns)
-p get_sudoku_check_error(solution_one, grid_lines, grid_columns)
-
-solution = solution_one
-
-puts "
-
-remove errors 2:
-
-"
-p solution_two = get_sudoku_remove_error(solution_one, grid_lines, grid_columns)
-
-p solution_two.flatten.length
-p get_sudoku_check?(solution_two, grid_lines, grid_columns)
-p get_sudoku_check_error(solution_two, grid_lines, grid_columns)
-
-solution = solution_two
-
-
-###########################################
-
-solution.each { |line| p line }
+p sudoku_structure.flatten.length
+p get_sudoku_check?(sudoku_structure, grid_lines, grid_columns)
+# p one_solution?(sudoku_structure, grid_lines, grid_columns)
 
 
 
+# 10.times do
 
+#   array = []
 
+#   array << sudoku_structure
 
+#   sample_line = (0..grid_size - 1).to_a.sample
+#   sample_cell = (0..grid_size - 1).to_a.sample
 
+#   sudoku_structure[sample_line][sample_cell] = []
 
+#   sudoku_structure.each do |line|
+#     p line
+#   end
 
+#   puts "
 
+#   "
 
-
-
-
+#   p one_solution?(array[-1], grid_lines, grid_columns)
+# end
 
 
 

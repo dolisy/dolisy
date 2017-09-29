@@ -1,0 +1,19 @@
+<h2>Show user</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @user.name %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn btn-default btn-xs" %>
+<%= link "Back", to: user_path(@conn, :index), class: "btn btn-default btn-xs"%>
+<%#= link "New user message", to: user_message_path(@conn, :new, @user), class: "btn btn-primary btn-xs" %>
